@@ -1,0 +1,30 @@
+一、Vue可视化创建项目
+命令:cmd 中 vue ui
+二、项目初始化
+  1.安装vue脚手架
+  2.通过vue脚手架创建项目
+  3.配置vue路由
+  4.配置Element-Ui组件库
+  5.配置axios库
+  6.初始化git远程仓库
+  7.将本地项目托管到github或码云中
+三、创建新项目：
+  1.预设:
+    a.手动:
+      ·Babel
+      ·Router
+      ·Linter/Formatter
+      ·使用配置文件
+
+  2.关上使用历史模式路由
+  3.选择ESLint+Standard config
+  4.Lint on save[保存即校验]
+四、安装插件Element插件
+   1.选择仪表盘中插件
+     a.添加插件
+   【注】搜索vue-cli-plugin-element
+    配置插件，要选择import on demand[避免项目臃肿]
+五、安装axios依赖
+   1.选择仪表盘中的依赖
+     a.搜索axios
+     b.【注】安装到运行环境
