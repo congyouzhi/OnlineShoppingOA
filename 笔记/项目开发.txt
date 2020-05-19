@@ -10,3 +10,89 @@
       c.客户端存储该token
       d.后续所有的请求都携带该token发送请求
       e.服务器端验证token是否通过
+    3.Git操作
+      a.git status // 查看项目当前状态
+      b.git checkout -b login // 创建login分支
+      c.git branch // 查看所有分支
+    4.可视化启动项目
+      a.可视化面板中 任务-serve-启动项目
+      b.启动app
+二、项目结构
+   1.css样式
+   <style lang="less" scoped></style> // scoped指的是代码生效区间-添加scoped指的是样式只在当前区间生效，删除后全局生效
+   2.【注】组件修改后需要同router[路由]进行渲染到页面中-[路由的作用]
+   3.【注】样式需要添加less-load依赖
+           在可视化中-依赖-添加less-load依赖[开发环境]
+	   还需要安装less依赖
+   4.main.js是入口文件
+三、Element-UI的使用
+  1.【注】Element-UI在使用的时候需要进行导入
+      导入在plugins中Element.js进行导入-否则不能使用
+    【注】导入完之后还需要进行use使用
+    【例】Element.js中
+    import Vue from 'vue'
+import { Button } from 'element-ui'
+import {Form,FormItem} from "element-ui";
+import {Input} from "element-ui";
+
+Vue.use(Button)
+Vue.use(Form)
+Vue.use(FormItem)
+Vue.use(Input)
+四、输入框图标
+  1.属性添加方式[推荐]-通过属性直接添加到标签中
+  2.slot添加方式
+  【例】prefix-icon="el-icon-search"
+  使用:
+  <!--密码-->
+        <el-form-item >
+          <el-input prefix-icon="el-icon-search"></el-input>
+        </el-form-item>
+   【注】el-icon中的图标可以通过icon图标进行替换，若icon图标中没有可以通过第三方图标库[阿里矢量图]进行替换
+五、阿里图标库的使用
+   1.首先在main.js中导入font.css样式
+   2.然后需要写上基础类iconfont 后面是名称
+   【例】
+   <el-input prefix-icon="iconfont icon-3702mima"></el-input>
+六、model数据绑定
+    1.首先在form表单上通过:model绑定表单对象
+    2.在input上通过v-model绑定form对象上的具体属性
+    【例】
+    <!--form表单绑定对象-->
+    <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+  <el-form-item label="密码" prop="pass">
+    <!--input绑定form对象的pass属性-->
+    <el-input type="password" v-model="ruleForm.pass" autocomplete="off"></el-input>
+  </el-form-item>
+七、表单验证[参考Element组件中的表单验证]
+    【注】绑定rules属性-:rules
+    1.规则在下面进行定义
+    【例】
+    rules: {
+          name: [
+            { required: true, message: '请输入活动名称', trigger: 'blur' },
+            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          ],
+          region: [
+            { required: true, message: '请选择活动区域', trigger: 'change' }
+          ]
+     【说明】
+     a.required:必填项
+     b.message:提示信息
+     c.trigger:触发事件
+     d.min:最小长度
+     e.max:最大长度
+     【使用】
+      给Item项指定验证规则-通过prop
+      【注】item指定的是下面控件的验证项
+      1.首先绑定一个校验规则
+      2.data数据中定义校验对象
+      3.不同的表单对象通过prop进行绑定校验对象
+八、获取表单对象
+      1.通过ref获取表单对象-添加到el-form上
+      2.【推荐】因为是ref引用-推荐使用ref后缀结尾
+      通过this-this表示当前页面对象[可以通过打印this-可以查看其中存在$ref对象]
+      通过this.$ref即获取当前页面对象
+      通过this.$ref.表单中的ref对象名称即可获取表单的对象名称
+      【例】this.$refs.loginFormRef
+      【注】因为Vue是双向绑定-所以该重置后恢复的是data中的数据信息
