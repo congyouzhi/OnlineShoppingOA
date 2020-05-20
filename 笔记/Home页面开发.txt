@@ -74,3 +74,13 @@ singleQuote:启用单引号
 五、合并Element-ui中的重复语法
 // 合并重复的element-ui[用','分割]
 import {Button, Form, FormItem, Input, Message} from 'element-ui'
+六、git合并
+   1.git statuts // 查看git状态
+   2.git add . // 将修改的添加到本地仓库中
+   3.git commit -m "完成登录功能" // 提交到本地仓库 [-m是注释]
+   4.git branch // 查看当前分支
+   5.git checkout master// 切换master分支 [checkout是切换分支]
+   6.git merge login // 合并login分支
+   7.git push // 提交到master分支上
+   8.git checkout login //切换到login分支上
+   9.git push -u origin login // 将login分支提交到git上[因为是第一次提交需要加-u]

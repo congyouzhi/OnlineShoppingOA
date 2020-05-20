@@ -1,0 +1,17 @@
+一、主页布局
+  1.通过参考Element-UI网站中的Container 布局容器进行布局
+  2.将Element-ui中的代码粘贴到<template>标签中
+  <template>
+<!--  Element-ui代码开始-->
+  <el-container>
+    <el-header>Header<el-button type="info" @click="logout">退出</el-button></el-header>
+    <el-container>
+      <el-aside width="200px">Aside</el-aside>
+      <el-main>Main</el-main>
+    </el-container>
+  </el-container>
+<!--  Element-ui代码结束-->
+</template>
+【注】引用el-container需要在element.js中进行导入
+【实用】el-header组件名称既可以当做class类名进行样式控制
+【例】<el-header>
