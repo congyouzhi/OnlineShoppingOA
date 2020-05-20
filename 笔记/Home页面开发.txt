@@ -1,0 +1,3 @@
+一、新建HOME页面
+   1.在components中新建HOME.vue组件
+   2.在router.js中导入HOME组件
