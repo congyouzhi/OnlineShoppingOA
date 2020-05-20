@@ -1,3 +1,76 @@
 一、新建HOME页面
    1.在components中新建HOME.vue组件
    2.在router.js中导入HOME组件
+   import Home from './components/Home.vue';
+   3.添加路由规则
+二、登录功能实现
+   1.路由导航守卫控制访问权限
+      如果用户没有登录，但是直接通过URL访问特定页面，需要重新导航到登录页面
+   【注】因为是对router进行操作因此需要操作router对象-将之前的export default new Router中的export去掉更换成 const router
+   2.在路由上挂载路由导航守卫-【beforeEach方法】
+   // 挂载路由导航守卫
+router.beforeEach((to, from, next)=>{
+  // to 将要访问的路径
+  // from 代表从哪个路径跳转而来
+  // next 是一个函数，表示放行
+  // next() 放行 next('/login') [注]若next中带有参数表示强制跳转
+})
+//【重点】定义后的对象要通过export default进行导出才能使用
+
+      【代码】
+const router =  new Router({
+  // 存储路由规则
+  routes:[
+    // 重定向
+    {path: '/',redirect:'/login'},
+    { path:'/login',component : Login},
+    { path:'/home',component : Home}
+  ]
+})
+
+// 挂载路由导航守卫
+router.beforeEach((to, from, next)=>{
+  // to 将要访问的路径
+  // from 代表从哪个路径跳转而来
+  // next 是一个函数，表示放行
+  // next() 放行 next('/login') [注]若next中带有参数表示强制跳转
+  // 判断地址是否为登录页面
+  if (to.path==='/login'){
+    // 放行
+    return next();
+  } else{
+    // 获取token
+    const tokenStr = window.sessionStorage.getItem('token');
+    // 判断token是否存在
+    if (!tokenStr){
+      // 若为空则跳转到登录页面
+      return next('/login')
+    } else{
+      // 否则不为空则直接通过
+      next();
+    }
+  }
+})
+
+// 【注】定义router为对象后要添加导出，才能使用路由
+export default router
+三、登录/退出功能
+   1.删除token
+   【公式】
+   // 清空token
+   window.sessionStorage.clear()
+   // 跳转到登录页
+   this.$router.push('/login')
+
+四、格式化项
+1.在根目录下新建.prettierrc文件[json文件]
+【内容】
+{
+  "semi": false,
+  "singleQuote": true
+}
+semi:js结尾不加分号
+singleQuote:启用单引号
+五、合并Element-ui中的重复语法
+// 合并重复的element-ui[用','分割]
+import {Button, Form, FormItem, Input, Message} from 'element-ui'
