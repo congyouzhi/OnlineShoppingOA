@@ -15,3 +15,23 @@
 【注】引用el-container需要在element.js中进行导入
 【实用】el-header组件名称既可以当做class类名进行样式控制
 【例】<el-header>
+ <style lang="less" scoped>
+  .el-header{
+    background-color: #373D41;
+  }
+  .el-aside{
+    background-color: #333744;
+
+  }
+  .el-main{
+    background-color: #EAEDF1;
+  }
+
+</style>
+二、页面撑满全屏
+   通过F12可以看见页面<section>没有占满空间
+   通过选择发现<section>为最外层<el-container>[因此需将container撑满]
+     1.给最外层<el-container>添加自定义类名
+       .home-container{
+    height: 100%;
+  }
