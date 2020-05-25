@@ -1,0 +1,2 @@
+一、首页路由的重定向效果
+  1.在components中定义welcome.vue组件
