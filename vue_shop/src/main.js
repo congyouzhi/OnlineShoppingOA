@@ -11,6 +11,13 @@ import './assets/css/global.css'
 import axios from 'axios'
 // 设置axios请求根路径
 axios.defaults.baseURL= 'http://timemeetyou.com:8889/api/private/v1/'
+// axios设置连接器
+axios.interceptors.request.use(config=>{
+  console.log(config)
+  config.headers.Authorization = window.sessionStorage.getItem('token')
+  // 在最后必须return config
+  return config
+})
 // 将包挂载到vue原型对象上-目的:每个Vue组件可以通过this直接访问http-从而发送请求
 Vue.prototype.$http = axios
 Vue.config.productionTip = false

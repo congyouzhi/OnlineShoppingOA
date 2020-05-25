@@ -35,3 +35,59 @@
        .home-container{
     height: 100%;
   }
+三、获取标签中的子标签 通过'>'
+   【例】
+     .el-header{
+    background-color: #373D41;
+    display: flex;
+    justify-content: space-between;
+    padding-left: 0;
+    align-items: center;
+    color: #fff;
+    font-size: 20px;
+    // 获取el-header中的div子标签
+    >div{
+      display: flex;
+      align-items: center;
+      span{
+        margin-left: 15px;
+      }
+    }
+  }
+四、通过axios请求拦截器添加token，保证拥有获取数据的权限[通过在header头部信息中添加Authorization字段来进行校验]
+  【公式】
+    // axios请求拦截[处理请求头]
+     axios.interceptors.request.use(config=>{
+     // 为请求头对象，添加Token验证的Authorization字段
+     .headers.Authorization = window.sessionStorage.getItem('token')
+     return config
+     })
+     【例】在main.js中的配置axios根路径下面配置axios拦截
+     // 设置axios请求根路径
+axios.defaults.baseURL= 'http://timemeetyou.com:8889/api/private/v1/'
+// axios设置连接器
+axios.interceptors.request.use(config=>{
+  console.log(config)
+  config.headers.Authorization = window.sessionStorage.getItem('token')
+  // 在最后必须return config
+  return config
+})
+// 将包挂载到vue原型对象上-目的:每个Vue组件可以通过this直接访问http-从而发送请求
+Vue.prototype.$http = axios
+五、导航栏的展示：
+   在el-submenu中添加v-for进行展示导航栏
+   <el-submenu index="1" v-for = 'item in menulist' :key="item.id">
+   【注】这里的index不能相同，需要通过index来控制导航栏的展示[可以通过id进行展示]
+六、自定义图标
+     1.定义字体对象
+     iconsObj-id作为键，图标名称作为值
+     iconObj:{
+          '125':'iconfont icon-user',
+          '103':'iconfont icon-tijikongjian',
+          '101':'iconfont icon-shangpin',
+          '102':'iconfont icon-danju',
+          '145':'iconfont icon-baobiao'
+        }
+	2.使用通过id进行赋值图标
+	       <!--图标-->
+              <i :class="iconObj[item.id]"></i>
