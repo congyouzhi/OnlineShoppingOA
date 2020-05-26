@@ -1,0 +1,24 @@
+一、页面分页
+    【公式】
+    <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="currentPage4"
+      :page-sizes="[100, 200, 300, 400]"
+      :page-size="100"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="400">
+    </el-pagination>
+    【注】第一次使用需要进行注册
+    1.将模板添加到template标签中
+    2.然后定义对应的函数-handleSizeChange、handleCurrentChange
+    【注】当前页数可以绑定到返回数据的pagenum上
+    a.:current-page="queryInfo.pagenum"
+    b.:page-sizes="[100, 200, 300, 400]" // 一页显示的条数
+    c.:page-size="100"
+    d.layout="total, sizes, prev, pager, next, jumper"// 页面展示的信息
+        -total:总条数
+    e.:total="total"--绑定总条数
+    【注】【注】分页后要将触发的事件绑定到pageInfo中
+    this.queryInfo.pagesize = newSize;
+    【注】【重要】因为数据发生变化因此需要刷新页面

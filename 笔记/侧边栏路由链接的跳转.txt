@@ -1,0 +1,35 @@
+1.通过router属性进行跳转
+绑定router属性为true
+<!--侧边栏菜单区-->
+        <el-menu
+          background-color="#333744"
+          text-color="#fff"
+          active-text-color="#409EFF"
+          unique-opened
+          :collapse = 'isCollapse'
+          :collapse-transition='false'
+          :router = 'true'>
+
+【注】
+Element组件中添加属性需要通过':'冒号绑定
+【例】router就是属性-通过：router
+【注】当属性为true时可以省略掉:和true
+
+<el-menu
+  background-color="#333744"
+  text-color="#fff"
+  active-text-color="#409EFF"
+  unique-opened
+  :collapse = 'isCollapse'
+  :collapse-transition='false'
+  :router = 'true'>
+  2.可以在返回的数据对象添加path作为路径
+              <!--二级菜单-->
+            <el-menu-item :index="'/'+subItem.path" v-for = 'subItem in item.children' :key="subItem.id">
+  3.这样直接通过index作为路径名进行跳转
+  4.点击对应的链接将文字高亮
+  【思路】
+   通过default-active="/roles"可以点击高亮
+   因此将路径存到sessionStage中
+   【注】css中!important用法：提升指定样式规则的应用优先权-自己的样式覆盖自带的样式
+   css中 box-shadow: 0 1px 1px rgba(0,0,0,0.15)!important;

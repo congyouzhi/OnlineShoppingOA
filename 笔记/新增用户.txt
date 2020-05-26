@@ -1,0 +1,31 @@
+1.新增用户信息
+<!--添加用户对话框-->
+    <el-dialog
+      title="提示"
+      :visible.sync="dialogVisible"
+      width="30%"
+      :before-close="handleClose">
+      <span>这是一段信息</span>
+      <span slot="footer" class="dialog-footer">
+    <el-button @click="dialogVisible = false">取 消</el-button>
+    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+  </span>
+    </el-dialog>
+    【说明】
+    a.title:弹出框的标题
+    b.:visible.sync // 控制弹出框是否显示
+    c.:before-close //在弹出框关闭之前触发的事件 
+
+
+2.自定义校验规则：
+   a.定义校验规则
+export default {
+    name: "Users.vue",
+    data() {
+      // 验证邮箱的规则
+      var checkEmail = (rule,value,cb)=>{
+        
+      }
+      // 验证手机号的校验规则
+      var checkMobile = (rule,value,cb)=>{}
+   b.通过正则进行校验

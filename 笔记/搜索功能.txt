@@ -1,0 +1,14 @@
+一、搜索功能
+   1.首先将输入框和数据data进行双向绑定
+   通过v-model绑定到queryInfo中的query上
+   2.在查询按钮上添加获取页面数据的方法
+   <el-col :span="8">
+          <el-input placeholder="请输入内容" v-model ="queryInfo.query">
+            <el-button slot="append" icon="el-icon-search" @click="getUserList()"></el-button>
+          </el-input>
+        </el-col>
+   3.清空输入框查询条件-clearable属性
+   4.清空输入框后触发查询事件-@clear="getUserList"
+   【注】Element中的事件[Input Events]
+   可以直接加到组件上-【注】前面要加'@'
+   属性-可以直接写

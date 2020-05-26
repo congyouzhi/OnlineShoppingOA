@@ -1,0 +1,58 @@
+一、列表查询请求
+  1.列表数据显示
+  【公式】
+  【参数说明】
+     a.:data：代表数据为当前数据绑定
+     b.tableData: 代表数据源
+     c.el-table-column:模板列-显示在页面上列
+     d.label:展示列上的标题
+     e.width:列的宽度
+     f.prop:列渲染的是哪个数据项-也就是对应的参数名称
+     <template>
+    <el-table
+      :data="tableData"
+      style="width: 100%">
+      <el-table-column
+        prop="date"
+        label="日期"
+        width="180">
+      </el-table-column>
+      <el-table-column
+        prop="name"
+        label="姓名"
+        width="180">
+      </el-table-column>
+      <el-table-column
+        prop="address"
+        label="地址">
+      </el-table-column>
+    </el-table>
+  </template>
+  2.索引列添加[序号]-[通过type属性直接添加]-在el-table-column标签中直接添加type属性就直接生成
+  【例】
+   <el-table-column type="index"></el-table-column>
+  3.在列表中添加开关
+    a.在el-table-column标签中添加一个<template>标签
+            <el-table-column label="状态" prop="mg_state">
+          <template slot-scope="scope">
+          </template>
+        </el-table-column>
+【注】在HTML中打印数据可以通过{{}}进行打印
+          <template slot-scope="scope">
+          </template>
+	  // 这样是获取表格对象
+	  【注】打印此行的数据[scope.row代表此行数据][作用域插槽原理]
+	          <el-table-column label="状态" prop="mg_state">
+          <template slot-scope="scope">
+            {{scope.row}}
+          </template>
+        </el-table-column>
+	【因此可以通过scope.row.具体数据拿到数据】
+【例】
+        <el-table-column label="状态">
+          <template slot-scope="scope">
+            <el-switch v-model="scope.row.mg_state"></el-switch>
+          </template>
+        </el-table-column>
+【注】第一次使用switch需要进行注册
+【总结】当绑定的是开关之类的，就可以去掉pro添加一个<template>标签通过作用域插槽就可以

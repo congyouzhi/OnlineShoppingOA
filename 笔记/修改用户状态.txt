@@ -1,0 +1,21 @@
+一、通过开关修改用户状态
+   1.首先需要监听开关事件
+   <template slot-scope="scope">
+            <el-switch v-model="scope.row.mg_state" @change="userStateChanged(scope.row)"></el-switch>
+          </template>
+     // userStateChanged为自定义事件
+     // 参数为行数据
+     2.methods中定义函数
+             // 监听switch开关的状态改变
+        userStateChanged(userInfo){
+          console.log(userInfo);
+
+        }
+【注】put请求中将url修改成反引号也就是左上角的[目的:传动态参数]
+this.$http.put(`users/:uId/state/:type`)
+【写法】-这样URL中的参数就会随着用户信息进行变化
+        // 监听switch开关的状态改变
+       async userStateChanged(userInfo){
+          console.log(userInfo);
+         await this.$http.put(`users/${userInfo.id}/state/${userInfo.mg_state}`)
+        }

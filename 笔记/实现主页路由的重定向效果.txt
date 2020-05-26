@@ -1,2 +1,19 @@
 一、首页路由的重定向效果
   1.在components中定义welcome.vue组件
+  2.在touter.js中导入Welcome组件
+  3.将welcome作为home的子路由规则
+  【公式】
+  { path:'/父地址',component : 父组件,children:[{path:'/子地址',component:子组件}]}
+  【注】只需在父组件中添加children同时children为数组，在数组中写子组件配置
+  【写法】
+  { path:'/home',component : Home,children:[{path:'/welcome',component:Welcome}]}
+  4.通过redirect进行路由跳转
+  【写法】
+  { path:'/home',component : Home,redirect:'/welcome',children:[{path:'/welcome',component:Welcome}]}
+  5.在Home.vue中放置route-view占位符
+  【例】
+  <!--右侧内容主体-->
+      <el-main>
+      <!--路由占位符-->
+        <router-view></router-view>
+      </el-main>
