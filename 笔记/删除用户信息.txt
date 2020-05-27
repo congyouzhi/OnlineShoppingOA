@@ -1,0 +1,6 @@
+一、删除用户信息
+  1.首先引用confirm
+  MessageBox
+  【注】不用Vue.use(MessageBox)
+  2.直接挂载即可
+  Vue.$confirm = MessageBox.confirm
