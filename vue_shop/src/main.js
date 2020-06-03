@@ -10,7 +10,7 @@ import './assets/css/global.css'
 // 导入axios配置
 import axios from 'axios'
 // 设置axios请求根路径
-axios.defaults.baseURL= 'http://timemeetyou.com:8889/api/private/v1/'
+axios.defaults.baseURL= 'http://39.105.42.229:8888/api/private/v1/'
 // axios设置连接器
 axios.interceptors.request.use(config=>{
   console.log(config)
