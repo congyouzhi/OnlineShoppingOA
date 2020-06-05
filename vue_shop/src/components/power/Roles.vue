@@ -99,6 +99,19 @@
           }
           this.editDialogVisible= true;
         },
+        async removeRoleById(id){
+          // 弹框询问用户是否删除数据
+           const confirmResult = await this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).catch(error=>{
+            return error
+          })
+          // 如果用户确认删除，则返回值为字符串confirm
+          // 如果用户取消删除，则返回值为字符串cancel
+          console.log(confirmResult)
+        },
         // 监听修改角色对话框的关闭事件
         editDialogClosed(){
           this.$refs.editFormRef.resetFields();

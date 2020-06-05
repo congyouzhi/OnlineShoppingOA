@@ -21,7 +21,7 @@
         </el-col>
       </el-row>
 
-      <!--                                                                                                       用户列表区域-->
+      <!--用户列表区域-->
       <el-table
         :data="userList"
         border
