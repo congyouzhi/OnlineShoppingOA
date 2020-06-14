@@ -282,7 +282,7 @@
               this.editDialogVisible = false;
               // 刷新数据列表
               this.getUserList()
-              // 提示修改成功
+              // 提示修改成功test
               this.$message.success('更新用户信息成功！')
             }
           }

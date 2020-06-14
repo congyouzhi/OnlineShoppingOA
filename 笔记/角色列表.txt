@@ -1,0 +1,53 @@
+一、角色列表权限显示
+        <!--展开列-->
+        <el-table-column type="expand">
+          <template slot-scope="scope">
+            <el-row :class="['bdbottom',i1===0?'bdtop':'']" v-for="(item1,i1) in scope.row.children" :key="item1.id">
+              <!--渲染一级权限-->
+              <el-col :span="5">
+                <el-tag>{{item1.authName}}</el-tag>
+                <i class="el-icon-caret-right"></i>
+              </el-col>
+              <!--渲染二级和三级权限-->
+              <el-col :span="19">
+                <!--通过for循环 嵌套渲染二级权限-->
+                <el-row :class="[i2===0?'':'bdtop']" v-for="(item2,i2) in item1.children" :key="item2.id">
+                  <el-col :span="6">
+                    <el-tag type="success">{{item2.authName}}</el-tag>
+                    <i class="el-icon-caret-right"></i>
+                  </el-col>
+                  <el-col :span="18">
+                    <el-tag v-for="(item3,i3) in item2.children"
+                            :key="item3.id" type="warning">{{item3.authName}}</el-tag>
+                  </el-col>
+                </el-row>
+              </el-col>
+            </el-row>
+              <pre>
+                {{scope.row}}
+              </pre>
+          </template>
+        </el-table-column>
+二、class类中可以写三元表达式，通过三元表达式绑定css
+<el-row :class="[i2===0?'':'bdtop']
+三、控制页面最小宽度[防止换行]
+在全局样式中global.css中html和body进行样式设置
+/*全局样式表*/
+html, body, #app {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    /*最小宽度*/
+    min-width: 1366px;
+}
+【注】其中的min-width进行设置
+三、纵向对齐
+  /*纵向居中对齐*/
+  .vcenter{
+    display: flex;
+    align-items: center;
+  }
+四、删除权限
+  1.删除权限后=>可以返回剩余的权限信息
+           // 这里不应该刷新列表，因为刷新列表后会合上，因此可以将删除后data的数据装载到list中
+         role.children = res.data
