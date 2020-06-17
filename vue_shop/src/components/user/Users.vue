@@ -232,7 +232,6 @@
         } else {
           this.userList = res.data.users;
           this.total = res.data.total;
-          console.log(res);
         }
       },
       // 监听pagesize改变的事件
@@ -249,7 +248,6 @@
       },
       // 监听switch开关的状态改变
       async userStateChanged(userInfo) {
-        console.log(userInfo);
         const {data: res} = await this.$http.put(`users/${userInfo.id}/state/${userInfo.mg_state}`)
         if (200 !== res.meta.status) {
           // 因为用户状态更新失败-应恢复原来状态

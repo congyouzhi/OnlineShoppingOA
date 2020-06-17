@@ -293,7 +293,6 @@
         } else{
           // 获取到的权限数据,保存到data中
           this.rightlist = res.data;
-          console.log(this.rightlist)
         // 递归获取三级节点的id
         this.getLeafKeys(role,this.defKeys)
         this.setRightDialogVisible = true;

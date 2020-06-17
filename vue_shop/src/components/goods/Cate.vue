@@ -65,6 +65,13 @@
           <el-input v-model="addCateForm.cat_name"></el-input>
         </el-form-item>
         <el-form-item label="父级分类:" prop="cat_name">
+          <!--options用来指定数据源-->
+          <!--props用来指定配置对象-->
+          <el-cascader
+            v-model="selectedKeys"
+            :options="parentCateList"
+            :props="{ expandTrigger: 'hover',cascaderProps }"
+            @change="handleChange"></el-cascader>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -130,7 +137,17 @@
         // 添加分类表单的验证规则对象
         addCateFormRules:{
           cat_name:[{require:true,message:'请输入分类名称',trigger:'blur'}]
-        }
+        },
+        // 父级分类的列表
+        parentCateList:[],
+        // 指定级联选择器的配置对象
+        cascaderProps:{
+          value:'cat_id',
+          label:'cat_name',
+          children:'children'
+        },
+        // 选中的父级分类的
+        selectedKeys:[]
       }
     },
     created() {
@@ -147,7 +164,6 @@
           this.cateList = res.data.result
           // 为总数据条数赋值
           this.total = res.data.total
-          console.log('商品分类:',res.data)
         }
       },
       // 退出登录
@@ -166,10 +182,19 @@
       },
       // 点击按钮,展示添加分类的对话框
       showAddCateDialog(){
+        // 先获取父级分类的列表
+        this.getParentCateList()
+        // 展示出对话框
         this.addCateDialogVisible = true
       },
       // 获取父级分类的数据列表
-      getParentCateList(){
+      async getParentCateList(){
+        const {data:res} = await this.$http.get(`categories`,{params:{type:2}})
+        if (200!==res.meta.status){
+          this.$message.error('获取父级分类数据失败!')
+        } else{
+          this.parentCateList = res.data
+        }
       }
     }
   }

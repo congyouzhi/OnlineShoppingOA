@@ -42,7 +42,6 @@
             return this.$message.error('获取权限列表失败')
           } else{
             this.rightsList = res.data
-            console.log(this.rightsList)
           }
         }
       }
