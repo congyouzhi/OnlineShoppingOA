@@ -1,0 +1,44 @@
+一、显示权限
+ 显示权限接口可以通过传递type进行区分显示的数据
+  type类型为：tree、list
+二、树形控件
+ <!--树形控件-->
+      <el-tree :data="rightlist" :props="defaultProps"></el-tree>
+【说明】
+data：绑定数据
+props:绑定对象[对象中再绑定显示的字段名称]
+在data函数中定义:
+        // 树形控件的属性绑定对象
+        treeProps:{
+          // 绑定显示的名称[对应返回的对象中的参数]
+          label:'authName',
+          // 绑定的子数组[对应返回的对象中的参数]
+          children:'children'
+        }
+【注】一定要将初次使用的组件添加到plugin中的element.js中进行注册
+三、树形结构绑定id值
+node-key="id"
+四、默认展开节点:default-expand-all="true"
+五、选中绑定数组
+属性:default-checked-keys="defKeys"
+【注】element中凡是绑定数据的都要添加':'在属性前面
+:default-checked-keys="defKeys"
+六、递归函数处理数据[递归函数通过传一个role对象然后进行操作，然后循环children中的子元素进行处理]
+      // 通过递归的形式,获取角色下所有三级权限的id，并保存到数组中
+      getLeafKeys(node,arr){
+        // 判断是否包含子节点
+        if (!node.children){
+          // 如果当前node节点不包含children属性,则是三级节点
+          return arr.push(node.id)
+        }
+        // 循环三级节点,然后再通过将三级节点传递进去进行递归循环
+        node.children.forEach(item=>this.getLeafKeys(item,arr))
+      }
+七、展开运算符：'...'[将两个数组拼接成一个数组]
+        const keys = [
+          ...this.$refs.treeRef.getCheckedKeys(),
+          ...this.$refs.treeRef.getHalfCheckedKeys()
+        ]
+八、分割数组
+ // 将数值根据逗号进行分割
+        const idStr = keys.join(',')
