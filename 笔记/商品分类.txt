@@ -1,0 +1,50 @@
+一、商品分类
+1.创建本地分支
+   git branch
+   git checkout -b goods_cate[注:第一创建分支]
+   git push -u origin goods_cate[创建完分支后将分支推送到远程分支上][注:若第一次创建本地分支，远端没有需要添加origin]
+二、树形列表
+   1.Vue可视化工时中->依赖面板-》安装vue-table-with-tree-grid第三方依赖 
+   2.点击查看详情->操作案例
+   3.在main.js中导入组件
+   import TreeTable from 'vue-table-with-tree-grid'
+   4.注册组件
+     Vue.component('tree-table',TreeTable)
+
+二、添加列作用域插槽
+在columns中定义
+template为插槽
+        // 为table指定列的定义
+        columns:[{
+          label:'分类名称',
+          prop:'cat_name'
+        },
+          {
+          label: '是否有效',
+          // 表示将当前列定义为模板列
+          type:'template',
+          // 表示当前这一列使用模板名称
+          template:'isok'
+        },
+          {
+            label: '排序',
+            // 表示将当前列定义为模板列
+            type:'template',
+            // 表示当前这一列使用模板名称
+            template:'order'
+          }
+        ]
+对应在页面区域定义<template>标签
+        <!--是否有效-->
+        <template slot="isok" slot-scope="scope">
+          <i class="el-icon-success" v-if="scope.row.cat_deleted===false" style="color: lightgreen"></i>
+          <i class="el-icon-error" v-else style="color: red"></i>
+        </template>
+        <!--排序-->
+        <template slot="order" slot-scope="scope">
+          <el-tag size="mini">一级</el-tag>
+          <el-tag type="success">二级</el-tag>
+          <el-tag type="warning">三级</el-tag>
+        </template>
+【注】type控制标签颜色
+【注】size控制标签大小mini
