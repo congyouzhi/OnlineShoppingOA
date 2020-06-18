@@ -68,10 +68,11 @@
           <!--options用来指定数据源-->
           <!--props用来指定配置对象-->
           <el-cascader
+            expand-trigger="hover"
             v-model="selectedKeys"
             :options="parentCateList"
-            :props="{ expandTrigger: 'hover',cascaderProps }"
-            @change="handleChange"></el-cascader>
+            :props="cascaderProps"
+            @change="parentCateChanged" clearable></el-cascader>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -195,6 +196,10 @@
         } else{
           this.parentCateList = res.data
         }
+      },
+      // 选择项发生变化触发这个函数
+      parentCateChanged(){
+        console.log("selectedKeys:",this.selectedKeys)
       }
     }
   }
@@ -206,6 +211,9 @@
   }
   .treeTable{
     margin-top: 15px;
+  }
+  .el-cascader{
+    width: 100%;
   }
 
 </style>
