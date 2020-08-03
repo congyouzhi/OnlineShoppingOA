@@ -56,7 +56,8 @@
     <el-dialog
       title="添加分类"
       :visible.sync="addCateDialogVisible"
-      width="50%">
+      width="50%"
+      @close="addCateDialogClosed">
       <!--添加分类的表单-->
       <el-form :model="addCateForm"
                :rules="addCateFormRules"
@@ -72,12 +73,14 @@
             v-model="selectedKeys"
             :options="parentCateList"
             :props="cascaderProps"
-            @change="parentCateChanged" clearable></el-cascader>
+            @change="parentCateChanged"
+            clearable
+            change-on-select></el-cascader>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-    <el-button @click="dialogVisible = false">取 消</el-button>
-    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+    <el-button @click="addCateDialogClosed">取 消</el-button>
+    <el-button type="primary" @click="addCate">确 定</el-button>
   </span>
     </el-dialog>
   </div>
@@ -147,7 +150,7 @@
           label:'cat_name',
           children:'children'
         },
-        // 选中的父级分类的
+        // 选中的父级分类的ID数组
         selectedKeys:[]
       }
     },
@@ -199,7 +202,45 @@
       },
       // 选择项发生变化触发这个函数
       parentCateChanged(){
-        console.log("selectedKeys:",this.selectedKeys)
+        // 如果 selectedKeys数组中的length大于0，证明选中的父级分类
+        //反之，就说明没有选中任何父级分类
+        if (this.selectedKeys>0) {
+          // 父级分类的Id
+          this.addCateForm.cat_pid = this.selectedKeys[this.selectedKeys.length-1]
+          // 为当前的分类的等级赋值
+          this.addCateForm.cat_level = this.selectedKeys.length
+        } else {
+          // 父级分类的ID
+          this.addCateForm.cat_pid = 0
+          // 为当前分类的等级赋值
+          this.addCateForm.cat_level = 0
+        }
+      },
+      // 点击按钮，添加新的分类
+      addCate() {
+        // 点击按钮，添加新的分类
+        this.$refs.addCateFormRef.validate(async valid =>{
+          if(!valid){
+            return
+          } else{
+            const {data:res} = await this.$http.post('categories',this.addCateForm)
+            if (201!==res.meta.status){
+              return this.$message.error('添加分类失败！')
+            } else{
+              return this.$message.success('添加分类成功！')
+              this.addCateDialogVisible = false
+              this.getCateList()
+            }
+          }
+        })
+      },
+      // 监听对话框的关闭事件，重置表单数据
+      addCateDialogClosed() {
+        this.$refs.addCateFormRef.resetFields()
+        this.selectedKeys = []
+        this.addCateForm.cat_level = 0
+        this.addCateForm.cat_pid = 0
+        this.addCateDialogVisible = false
       }
     }
   }
