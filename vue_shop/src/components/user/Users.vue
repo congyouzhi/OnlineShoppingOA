@@ -286,7 +286,6 @@
        // console.log(id);
       const {data:res} = await this.$http.get('users/'+id)
        if (200!==res.meta.status){
-         return
         return this.$message.error('查询用户信息失败！')
        }else {
          this.editForm = res.data
