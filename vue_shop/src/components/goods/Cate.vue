@@ -39,7 +39,7 @@
           <el-button type="primary" icon="el-icon-edit" size="mini"
                      @click="showEditCateDialogVisible(scope.row.cat_id)">编辑
           </el-button>
-          <el-button type="danger" icon="el-icon-delete" size="mini" @click="DeleteCateInfo(scope.row.cat_id)">删除</el-button>
+          <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteCateInfo(scope.row.cat_id)">删除</el-button>
         </template>
       </tree-table>
       <!--分页区域-->
@@ -318,7 +318,7 @@
 
       },
       // 删除分类信息
-      async DeleteCateInfo(cateId) {
+      async deleteCateInfo(cateId) {
         const {data:res} = await this.$http.delete('categories/'+cateId)
         if(200!== res.meta.status) {
           return this.$message.error('分类信息删除失败！')
