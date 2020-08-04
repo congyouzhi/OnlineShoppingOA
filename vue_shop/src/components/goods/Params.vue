@@ -10,15 +10,35 @@
       <!--头部警告区-->
       <el-alert
         title="注意:只允许为第三级分类设置相关参数!"
-        type="warning" show-icon :closable = false>
+        type="warning" show-icon :closable=false>
       </el-alert>
       <!--选择商品分类区域-->
       <el-row class="cat_opt">
         <el-col>
           <span>选择商品分类:</span>
           <!--选择商品分类的级联-->
+          <el-cascader
+            v-model="selectedCateKeys"
+            :options="cateList"
+            expand-trigger="hover"
+            :props="cateProps"
+            @change="handleChange"></el-cascader>
         </el-col>
       </el-row>
+
+      <!--tab 页签区-->
+      <el-tabs v-model="activeName" @tab-click="handleTabClick">
+        <!--添加动态参数的面板-->
+        <el-tab-pane label="动态参数" name="first">
+          <!--添加参数的按钮-->
+          <el-button type="primary" size="mini" :disabled = "isBtnDisabled">添加参数</el-button>
+        </el-tab-pane>
+        <!--添加静态属性的面板-->
+        <el-tab-pane label="静态属性" name="second">
+          <!--添加属性的按钮-->
+          <el-button type="primary" size="mini" :disabled = "isBtnDisabled">添加属性</el-button>
+        </el-tab-pane>
+      </el-tabs>
     </el-card>
   </div>
 
@@ -29,7 +49,17 @@
     data() {
       return {
         // 商品分类列表
-        cateList:[]
+        cateList: [],
+        // 级联选择框的配置对象
+        cateProps: {
+          value: 'cat_id',
+          label: 'cat_name',
+          children: 'children'
+        },
+        // 级联选择框双向绑定到的数组
+        selectedCateKeys: [],
+        // 被激活的页签名称
+        activeName: 'first'
       }
     },
     created() {
@@ -38,12 +68,36 @@
     },
     methods: {
       async getCateList() {
-        const {data:res} = await this.$http.get(`categories`)
-        if (200!==res.meta.status){
+        const {data: res} = await this.$http.get(`categories`)
+        if (200 !== res.meta.status) {
           return this.$message.error('获取所有的商品分类列表失败！')
         } else {
-
+          this.cateList = res.data
+          console.log('cateList:', this.cateList)
         }
+      },
+      // 级联选择框选中变化,会触发这个函数
+      handleChange() {
+        // 证明选中的不是三级分类
+        if (this.selectedCateKeys.length !== 3) {
+          this.selectedCateKeys = []
+          return
+        }
+
+        // 证明选中的是三级分类
+      },
+      // tab页签点击事件的处理函数
+      handleTabClick() {
+        console.log(this.activeName)
+      }
+    },
+    computed: {
+      // 如果按钮需要被禁用，则返回true，否则返回false
+      isBtnDisabled() {
+        if (this.selectedCateKeys.length !== 3) {
+          return true
+        }
+        return false
       }
     }
   }
