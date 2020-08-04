@@ -30,7 +30,8 @@ import {
   Tree,
   Select,
   Option,
-  cascader
+  cascader,
+  alert
 } from 'element-ui'
 
 
@@ -61,6 +62,7 @@ Vue.use(Tree)
 Vue.use(Option)
 Vue.use(Select)
 Vue.use(cascader)
+Vue.use(alert)
 Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm
 
