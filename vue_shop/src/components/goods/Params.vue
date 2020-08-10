@@ -44,7 +44,7 @@
             <el-table-column label="参数名称" prop="attr_name"></el-table-column>
             <el-table-column label="操作" prop="">
               <template slot-scope="scope">
-                <el-button type="primary" icon="el-icon-edit" size="mini" @click="showEditDialog">修改</el-button>
+                <el-button type="primary" icon="el-icon-edit" size="mini" @click="showEditDialog(scope.row.attr_id)">修改</el-button>
                 <el-button type="danger" icon="el-icon-delete" size="mini">删除</el-button>
               </template>
             </el-table-column>
@@ -65,7 +65,7 @@
             <el-table-column label="属性名称" prop="attr_name"></el-table-column>
             <el-table-column label="操作" prop="">
               <template slot-scope="scope">
-                <el-button type="primary" icon="el-icon-edit" size="mini" @click="showEditDialog">修改</el-button>
+                <el-button type="primary" icon="el-icon-edit" size="mini" @click="showEditDialog(scope.row.attr_id)">修改</el-button>
                 <el-button type="danger" icon="el-icon-delete" size="mini">删除</el-button>
               </template>
             </el-table-column>
@@ -148,8 +148,14 @@
         },
         // 控制修改对话框的显示与隐藏
         editDialogVisible:false,
-        // xiugia de
-        editForm:{}
+        // 修改的表单数据对象
+        editForm:{},
+        // 修改表单的验证规则对象
+      editFormRules: {
+        attr_name: [
+          {required: true, message: '请输入参数名称', trigger: 'blur'}
+        ]
+      },
       }
     },
     created() {
@@ -219,8 +225,14 @@
         })
       },
       // 点击按钮，展示修改的对话框
-      showEditDialog() {
-
+      async showEditDialog(attr_id) {
+        const {data:res} = await this.$http.get(`categories/${this.cateId}/attributes/${attr_id}`,{params:{attr_sel:this.activeName}})
+        if (200!==res.meta.status) {
+          return this.$message.error('获取参数信息失败！')
+        } else {
+          this.editForm = res.data
+          this.editDialogVisible = true
+        }
       },
       // 重置修改的表单
       editDialogClosed(){
@@ -248,6 +260,10 @@
           return '动态参数'
         }
         return '静态属性'
+      },
+      // 点击按钮修改参数
+      editParams(){
+
       }
     }
   }
