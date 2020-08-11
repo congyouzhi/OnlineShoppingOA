@@ -1,0 +1,23 @@
+1.在src中的components创建goods目录[用于存放商品相关的组件]
+2.通过路由进行页面显示
+在router.js中创建
+a.首先导入vue文件
+import Cate from "./components/goods/Cate";
+然后将组件祖册到路径下
+const router =  new Router({
+  // 存储路由规则
+  routes:[
+    // 重定向
+    {path: '/',redirect:'/login'},
+    { path:'/login',component : Login},
+    { path:'/home',component : Home,redirect:'/welcome',
+      children:[
+        {path:'/welcome',component:Welcome},
+        {path: '/users',component:Users},
+        {path: '/rights',component: Rights},
+        {path: '/roles',component: Roles},
+        {path: '/categories',component: Cate}
+        ]}
+  ]
+})
+【注】这里通过component进行指定组件

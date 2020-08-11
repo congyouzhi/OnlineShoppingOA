@@ -1,0 +1,38 @@
+1.级联选择器-二级联动
+2.Element-ui中是Cascader 级联选择器
+3.在Element.js中导入Cascader
+import {
+  Button,
+  Form,
+  FormItem,
+  Input,
+  Message,
+  Container,
+  Header,
+  Aside,
+  Main,
+  Menu,
+  Submenu,
+  MenuItem,
+  Breadcrumb,
+  BreadcrumbItem,
+  Card,
+  Row,
+  Col,
+  Table,
+  TableColumn,
+  Switch,
+  Tooltip,
+  Pagination,
+  Dialog,
+  MessageBox,
+  Tag,
+  Tree,
+  Select,
+  Option,
+  cascader
+} from 'element-ui'
+
+
+4.然后通过Vue.use()进行注册
+Vue.use(cascader)

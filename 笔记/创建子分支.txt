@@ -1,0 +1,4 @@
+git branch :查看当前分支
+git checkout -b 子分支名称:创建子分支
+git push -u origin 子分支名称:在远端创建子分支【判断远端有没有，有的话不用加-u,没有需要加-u】
+同时origin后面的子分支名称是远端的分支名称

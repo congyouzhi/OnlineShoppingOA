@@ -1,0 +1,7 @@
+1.首先创建一个Vue文件
+2.在router.js中导入importVue
+[例]:import Params from "./components/goods/Params";
+3.通过子路由定义在Home中
+[例]:{path: '/params',component: Params}
+4.在Element中element.js中导入alter组件
+Vue.use(alert)
