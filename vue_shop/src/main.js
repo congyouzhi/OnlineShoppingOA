@@ -25,6 +25,33 @@ Vue.config.productionTip = false
 
 Vue.component('tree-table',TreeTable)
 
+// 定义全局时间格式化，过滤器
+// originVal:传过来的时间-时间戳
+// 定义方法名为:dataFormat,跟一个函数-函数对时间进行处理
+Vue.filter('dataFormat',function (originVal) {
+  // 将传过来的时间戳进行格式化成时间
+  const dt =  new Date(originVal)
+  // 获取年份
+  const y = dt.getFullYear()
+  // 获取月份
+  // 这里由于月份从0开始所以+1
+  // 同时先将月份转换成字符串通过+''
+  // padStart将字符串补充，若不满2位通过0补位
+
+  const m = (dt.getMonth() +1+'').padStart(2,'0')
+  // 获取日
+  const d = (dt.getDate() +'').padStart(2,'0')
+  // 获取小时
+  const hh = (dt.getHours() +'').padStart(2,'0')
+  // 获取分钟
+  const mm =(dt.getMinutes() + '').padStart(2,'0')
+  // 获取秒
+  const ss = (dt.getSeconds() + '').padStart(2,'0')
+  // 返回拼接好的时间
+  return`${y}-${m}-${d} ${hh}:${mm}:${ss}`
+
+})
+
 new Vue({
   router,
   render: h => h(App)
