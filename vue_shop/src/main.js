@@ -14,7 +14,6 @@ import axios from 'axios'
 axios.defaults.baseURL= 'http://39.105.42.229:8888/api/private/v1/'
 // axios设置连接器
 axios.interceptors.request.use(config=>{
-  console.log(config)
   config.headers.Authorization = window.sessionStorage.getItem('token')
   // 在最后必须return config
   return config
