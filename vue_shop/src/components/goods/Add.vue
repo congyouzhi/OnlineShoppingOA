@@ -75,7 +75,13 @@
               <el-button size="small" type="primary">点击上传</el-button>
             </el-upload>
           </el-tab-pane>
-          <el-tab-pane label="商品内容" name="4">商品内容</el-tab-pane>
+          <el-tab-pane label="商品内容" name="4">
+            <!--富文本编辑器组件-->
+            <quill-editor v-model="addForm.goods_introduce">
+            </quill-editor>
+            <!--添加商品按钮-->
+            <el-button type="pr imary" class="btnAdd" @click="add">添加商品</el-button>
+          </el-tab-pane>
         </el-tabs>
       </el-form>
     </el-card>
@@ -85,7 +91,7 @@
       title="图片预览"
       :visible.sync="previewVisible"
       width="50%">
-      <img :src="previewPath" alt="">
+      <img :src="previewPath" alt="" class="previewImg">
     </el-dialog>
 
 
@@ -93,6 +99,9 @@
 </template>
 
 <script>
+
+  import _ from 'lodash'
+
   export default {
     created() {
       this.getCateList();
@@ -109,7 +118,10 @@
           // 商品所属的分类数组
           goods_cat: [],
           // 图片数组
-          pics:[]
+          pics: [],
+          // 商品的详情描述
+          goods_introduce: '',
+          attrs: []
         },
         // 动态参数列表数据
         manyTableData: [],
@@ -142,13 +154,13 @@
         // 上传图片的URL地址
         uploadURL: `http://39.105.42.229:8888/api/private/v1/upload`,
         // BaseURL地址
-        baseURL:`http://39.105.42.229:8888/`,
+        baseURL: `http://39.105.42.229:8888/`,
         // 图片上传组件的header请求头对象
-        headerObj:{
-          Authorization:window.sessionStorage.getItem('token')
+        headerObj: {
+          Authorization: window.sessionStorage.getItem('token')
         },
-        previewPath:'',
-        previewVisible:false
+        previewPath: '',
+        previewVisible: false
       }
     },
     methods: {
@@ -199,30 +211,63 @@
       },
       // 处理图片预览效果
       handlePreview(file) {
-        console.log('pre:',file)
-        this.previewPath = this.baseURL+file.response.data.tmp_path
-        console.log('previewPath:',this.previewPath)
+        this.previewPath = this.baseURL + file.response.data.tmp_path
         this.previewVisible = true
 
       },
       // 处理移除图片的操作
       handleRemove(file) {
-        console.log('file:',file)
         // 1.获取将要删除的图片的临时路径
         const filePath = file.response.data.tmp_path
         // 2.从pics数组中,找到这个图片对应的索引值
-        const i = this.addForm.pics.findIndex(x=>x.pic===filePath)
+        const i = this.addForm.pics.findIndex(x => x.pic === filePath)
         // 3.调用数组的splice方法,把图片信息对象,从pics数组中移除
-        this.addForm.pics.splice(i,1)
+        this.addForm.pics.splice(i, 1)
       },
       // 监听图片上传成功的事件
-      handleSuccess(response){
+      handleSuccess(response) {
         console.log(response)
         // 1.拼接得到一个图片信息对象
-        const picInfo = {pic:response.data.tmp_path}
+        const picInfo = {pic: response.data.tmp_path}
         // 2.将图片信息对象，push到pics数组中
         this.addForm.pics.push(picInfo)
-        console.log('addForm:',this.addForm)
+        console.log('addForm:', this.addForm)
+      },
+      // 添加商品
+      add() {
+        this.$refs.addFormRef.validate(async valid => {
+          if (!valid) {
+            return this.$message.error('请填写必要的表单项！')
+          } else {
+            // 执行添加的业务逻辑
+            // lodash cloneDeep(obj)
+            const form = _.cloneDeep(this.addForm)
+            form.goods_cat = form.goods_cat.join(',')
+            // 处理动态参数
+            this.manyTableData.forEach(item => {
+              const newInfo = {attr_id: item.attr_id, attr_value: item.attr_vals.join(',')}
+              this.addForm.attrs.push(newInfo)
+            })
+            // 处理静态属性
+            this.onlyTableData.forEach(item => {
+              const newInfo = {attr_id: item.attr_id, attr_value: item.attr_vals}
+              this.addForm.attrs.push(newInfo)
+            })
+            form.attrs = this.addForm.attrs
+            console.log('form:', form)
+
+            // 发起请求添加商品
+            // 商品名称，必须是唯一的
+            const {data: res} = await this.$http.post(`goods`, form)
+            console.log('res:',res)
+            if (201 !== res.meta.status) {
+              return this.$message.error('添加商品失败！')
+            } else {
+              this.$message.success('添加商品成功！')
+              this.$router.push(`/goods`)
+            }
+          }
+        })
       }
     },
     computed: {
@@ -241,5 +286,13 @@
 <style lang="less" scoped>
   .el-checkbox {
     margin: 0 10px 0 0 !important;
+  }
+
+  .previewImg {
+    width: 100%;
+  }
+
+  .btnAdd {
+    margin-top: 15px;
   }
 </style>
