@@ -8,13 +8,13 @@
     </el-breadcrumb>
     <!--卡片视图区域-->
     <el-card>
-       <el-row>
-         <el-col :span="8">
-           <el-input>
-           <el-button slot="append" icon="el-icon-search"></el-button>
-           </el-input>
-         </el-col>
-       </el-row>
+      <el-row>
+        <el-col :span="8">
+          <el-input>
+            <el-button slot="append" icon="el-icon-search"></el-button>
+          </el-input>
+        </el-col>
+      </el-row>
       <!--表格区域-->
       <el-table
         :data="orderList"
@@ -35,6 +35,10 @@
         <el-table-column
           prop="pay_status"
           label="是否付款">
+          <template slot-scope="scope">
+            <el-tag type="success" v-if="scope.row.pay_status ==='1'">已付款</el-tag>
+            <el-tag type="danger" v-else>未付款</el-tag>
+          </template>
         </el-table-column>
         <el-table-column
           prop="is_send"
@@ -44,13 +48,13 @@
           prop="create_time"
           label="下单时间">
           <template slot-scope="scope">
-            {{scope.create_time|dataFormat}}
+            {{scope.row.create_time|dataFormat}}
           </template>
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-          <el-button type="primary" size="mini" icon="el-icon-edit"></el-button>
-          <el-button type="success" size="mini" icon="el-icon-location-outline"></el-button>
+            <el-button type="primary" size="mini" icon="el-icon-edit" @click="showBox"></el-button>
+            <el-button type="success" size="mini" icon="el-icon-location-outline" @click="showProgressBox"></el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -58,38 +62,89 @@
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page="currentPage4"
+        :current-page="queryInfo.pagenum"
         :page-sizes="[3, 5, 10, 15]"
-        :page-size="total"
+        :page-size="queryInfo.pagesize"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="400">
+        :total="total">
       </el-pagination>
     </el-card>
+
+    <!--修改地址的对话框-->
+    <el-dialog
+      title="修改地址"
+      :visible.sync="addressVisible"
+      width="50%"
+      @close="addressDialogClosed"
+    >
+      <el-form :model="addressForm" :rules="addressFormRules" ref="addressFormRef" label-width="100px">
+        <el-form-item label="省市区/县" prop="address1">
+          <el-cascader :options="citydata"
+                       v-model="addressForm.address1"></el-cascader>
+        </el-form-item>
+        <el-form-item label="详细地址" prop="address2">
+          <el-input v-model="addressForm.address2"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+    <el-button @click="addressDialogClosed">取 消</el-button>
+    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+  </span>
+    </el-dialog>
+
+    <!--展示物流进度的对话框-->
+    <el-dialog
+      title="物流进度"
+      :visible.sync="progressVisible"
+      width="50%">
+      <span>这是一段信息</span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
+
+  import citydata from "./citydata";
+
   export default {
     data() {
       return {
         queryInfo: {
-          query:'',
-          pagenum:1,
-          pagesize:10
+          query: '',
+          pagenum: 1,
+          pagesize: 10
         },
-        total:0,
+        total: 0,
         // 订单列表数据
-        orderList:[]
+        orderList: [],
+        // 修改地址对话框
+        addressVisible: false,
+        addressForm: {
+          address1: [],
+          address2: ''
+        },
+        addressFormRules: {
+          address1: [
+            {required: true, message: '请选择省市区县', trigger: 'blur'}
+          ],
+          address2: [
+            {required: true, message: '请填写详细地址', trigger: 'blur'}
+          ]
+        },
+        citydata: citydata,
+        progressVisible: false,
+        // 物流信息
+        progressInfo:[]
       }
     },
     created() {
       this.getOrderList()
     },
     methods: {
-      async getOrderList(){
-        const {data:res} = await this.$http.get(`orders`, {params:this.queryInfo})
-        console.log('res:',res)
-        if(200!==res.meta.status) {
+      async getOrderList() {
+        const {data: res} = await this.$http.get(`orders`, {params: this.queryInfo})
+        console.log('res:', res)
+        if (200 !== res.meta.status) {
           return this.$message.error('查询订单列表失败！')
         } else {
           this.$message.success('查询订单；列表成功！')
@@ -97,10 +152,34 @@
           this.total = res.data.total
         }
       },
-      handleSizeChange() {
+      handleSizeChange(newSize) {
+        this.queryInfo.pagesize = newSize
+        this.getOrderList()
 
       },
-      handleCurrentChange() {
+      handleCurrentChange(newPage) {
+        this.queryInfo.pagenum = newPage
+        this.getOrderList()
+      },
+      // 展示修改地址的对话框
+      showBox() {
+        this.addressVisible = true
+      },
+      addressDialogClosed() {
+        this.addressVisible = false
+        this.addressForm.address1 = []
+        this.$refs.addressFormRef.resetFields()
+      },
+      async showProgressBox() {
+        const {data: res} = await this.$http.get(`/kuaidi/1106975712662`)
+        if (200!== res.meta.status) {
+          return this.$message.error('获取商品物流失败！')
+        } else{
+          this.$message.success('获取商品物流成功！')
+          this.progressInfo= res.data
+          console.log('progressInfo:',this.progressInfo)
+        }
+
 
       }
     },
@@ -109,6 +188,11 @@
   }
 </script>
 
+
 <style lang="less" scoped>
+
+  .el-cascader {
+    width: 100%;
+  }
 
 </style>
