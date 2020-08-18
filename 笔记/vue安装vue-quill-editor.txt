@@ -1,0 +1,24 @@
+vue-quill-editor
+富文本框
+1.在可视化Vue中依赖->运行依赖->vue-quill-editor
+2.也可以运行github上的命令
+cnpm install vue-quill-editor --save
+3.在main.js中导入组件[在Vue下面导入]
+import Vue from 'vue'
+import VueQuillEditor from 'vue-quill-editor'
+使用Mount with local component中的导入样式
+【注】教程中使用SPA但是Github官方文档上没有所以采用【component】相关
+// 导入富文本样式
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
+// 注册富文本
+import { quillEditor } from 'vue-quill-editor'
+【使用】
+          <el-tab-pane label="商品内容" name="4">
+            <!--富文本编辑器组件-->
+            <quill-editor v-model="addForm.goods_introduce">
+            </quill-editor>
+            <!--添加商品按钮-->
+            <el-button type="primary" class="btnAdd">添加商品</el-button>
+          </el-tab-pane>
