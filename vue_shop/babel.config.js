@@ -16,6 +16,7 @@ module.exports = {
         styleLibraryName: 'theme-chalk'
       }
     ],
+    // 发布产品时候的插件数组
     ...prodPlugins
   ]
 }
