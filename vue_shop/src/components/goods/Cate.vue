@@ -39,7 +39,8 @@
           <el-button type="primary" icon="el-icon-edit" size="mini"
                      @click="showEditCateDialogVisible(scope.row.cat_id)">编辑
           </el-button>
-          <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteCateInfo(scope.row.cat_id)">删除</el-button>
+          <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteCateInfo(scope.row.cat_id)">删除
+          </el-button>
         </template>
       </tree-table>
       <!--分页区域-->
@@ -319,17 +320,17 @@
       },
       // 删除分类信息
       async deleteCateInfo(cateId) {
-        const {data:res} = await this.$http.delete('categories/'+cateId)
-        if(200!== res.meta.status) {
+        const {data: res} = await this.$http.delete('categories/' + cateId)
+        if (200 !== res.meta.status) {
           return this.$message.error('分类信息删除失败！')
-        } else{
+        } else {
           // 刷新列表
           this.getCateList()
           this.$message.success('分类信息删除成功！')
 
         }
 
-  }
+      }
     }
   }
 </script>

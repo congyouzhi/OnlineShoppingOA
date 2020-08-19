@@ -15,14 +15,27 @@ import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
 
+// 导入 NProgress包对应的JS和CSS
+import NProgress from 'nprogress'
+import  'nprogress/nprogress.css'
+
 // 导入axios配置
 import axios from 'axios'
 // 设置axios请求根路径
 axios.defaults.baseURL= 'http://39.105.42.229:8888/api/private/v1/'
-// axios设置连接器
+// 在request拦截器中,展示进度条 Nprogress.start()
+// axios设置连接器Nprogress
 axios.interceptors.request.use(config=>{
+  // 展示进度条
+  NProgress.start()
   config.headers.Authorization = window.sessionStorage.getItem('token')
   // 在最后必须return config
+  return config
+})
+// 在response拦截器中,隐藏进度条 Nprogress.done()
+axios.interceptors.response.use(config=>{
+  // 隐藏进度条
+  NProgress.done()
   return config
 })
 // 将包挂载到vue原型对象上-目的:每个Vue组件可以通过this直接访问http-从而发送请求
