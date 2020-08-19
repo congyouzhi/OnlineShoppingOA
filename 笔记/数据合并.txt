@@ -1,0 +1,6 @@
+数据合并
+1.使用lodash进行数据合并
+2.导入lodash
+3.在使用数据前进行数据合并[merge方法]
+      const result = _.merge(res.data,this.options)
+      myChart.setOption(result)
