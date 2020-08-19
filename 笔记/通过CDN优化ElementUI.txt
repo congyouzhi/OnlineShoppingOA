@@ -1,0 +1,13 @@
+通过CDN优化ElementUI打包
+【操作流程】
+①:在main-prod.js中，注释掉element-ui按需加载的代码
+②在index.html的头部区域中,通过CDN加载element-ui的js和css样式
+【操作】
+a.在public/index.html中添加如下css和jsCDN
+<!-- element-ui 的样式表文件 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- element-ui 的 js 文件 -->
+    <script src="https://cdn.staticfile.org/element-ui/2.8.2/index.js"></script>
+【注】将css都和之前的富文本css写到一起js写到一起
+b.注释掉main-prod.js中import Element-ui的代码【在头部】或删除掉
+// import './plugins/element.js'
