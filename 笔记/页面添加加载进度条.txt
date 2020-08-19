@@ -1,0 +1,51 @@
+页面添加加载进度条
+1.使用nprogress[第三方]
+【参考】：https://github.com/rstacruz/nprogress
+2.安装nprogress
+cnpm install --save nprogress
+3.在main.js中导入Nprogress包
+// 导入 NProgress包对应的JS和CSS
+import NProgress from 'nprogress'
+import  'nprogress/nprogress.css'
+4.在请求拦截器中添加加载进度条
+// axios设置连接器Nprogress
+axios.interceptors.request.use(config=>{
+  // 展示进度条
+  NProgress.start()
+5.在response响应拦截器中添加隐藏进度条
+// 在response拦截器中,隐藏进度条 Nprogress.done()
+axios.interceptors.response.use(config=>{
+  // 隐藏进度条
+  NProgress.done()
+  return config
+})
+【注】
+拦截器写法
+【公式】axios.interceptors.response.use// 响应拦截器
+【公式】axios.interceptors.request.use// 请求拦截器
+只需将其中的request和response进行替换即可
+然后use中写回调函数
+【代码】
+// 导入 NProgress包对应的JS和CSS
+import NProgress from 'nprogress'
+import  'nprogress/nprogress.css'
+
+// 导入axios配置
+import axios from 'axios'
+// 设置axios请求根路径
+axios.defaults.baseURL= 'http://39.105.42.229:8888/api/private/v1/'
+// 在request拦截器中,展示进度条 Nprogress.start()
+// axios设置连接器Nprogress
+axios.interceptors.request.use(config=>{
+  // 展示进度条
+  NProgress.start()
+  config.headers.Authorization = window.sessionStorage.getItem('token')
+  // 在最后必须return config
+  return config
+})
+// 在response拦截器中,隐藏进度条 Nprogress.done()
+axios.interceptors.response.use(config=>{
+  // 隐藏进度条
+  NProgress.done()
+  return config
+})

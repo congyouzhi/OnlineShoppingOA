@@ -1,0 +1,21 @@
+打包设置去掉console插件【可视化中-开发依赖】
+【插件名称】：babel-plugin-transform-remove-console
+【官方文档】：https://www.npmjs.com/package/babel-plugin-transform-remove-console
+【安装命令】：cnpm install babel-plugin-transform-remove-console --save-dev
+【使用】
+【注】
+和官方文档不同
+1.在babel.config.js文件中的plugins数组中添加'transform-remove-console'
+【例】
+
+  plugins: [
+    [
+      'component',
+      {
+        libraryName: 'element-ui',
+        styleLibraryName: 'theme-chalk'
+      }
+    ],
+    'transform-remove-console'
+  ]
+然后即可
