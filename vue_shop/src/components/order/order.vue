@@ -97,7 +97,18 @@
       title="物流进度"
       :visible.sync="progressVisible"
       width="50%">
-      <span>这是一段信息</span>
+      <!--时间线-->
+      <!--progressInfo物流信息-->
+      <!--timestamp是时间信息-->
+      <!--activity.context指的是显示出来的文字信息-->
+      <el-timeline >
+        <el-timeline-item
+          v-for="(activity, index) in progressInfo"
+          :key="index"
+          :timestamp="activity.time">
+          {{activity.context}}
+        </el-timeline-item>
+      </el-timeline>
     </el-dialog>
   </div>
 </template>
@@ -177,10 +188,9 @@
         } else{
           this.$message.success('获取商品物流成功！')
           this.progressInfo= res.data
+          this.progressVisible = true
           console.log('progressInfo:',this.progressInfo)
         }
-
-
       }
     },
     computed: {},
