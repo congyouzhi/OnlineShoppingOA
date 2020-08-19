@@ -1,0 +1,20 @@
+1.创建商品列表
+  注册路由
+在router.js中导入文件import GoodsList from "./components/goods/List";
+2.注册到home子路径下
+  // 存储路由规则
+  routes:[
+    // 重定向
+    {path: '/',redirect:'/login'},
+    { path:'/login',component : Login},
+    { path:'/home',component : Home,redirect:'/welcome',
+      children:[
+        {path:'/welcome',component:Welcome},
+        {path: '/users',component:Users},
+        {path: '/rights',component: Rights},
+        {path: '/roles',component: Roles},
+        {path: '/categories',component: Cate},
+        {path: '/params',component: Params},
+        {path: '/goods',component: GoodsList}
+        ]}
+3.然后可以直接访问

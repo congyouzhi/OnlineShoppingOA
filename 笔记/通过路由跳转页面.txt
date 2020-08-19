@@ -1,0 +1,18 @@
+1.通过路由跳转页面
+Vue通过路由跳转页面[组件]
+【公式】this.$router.push(`/路径`)
+【注】这里是router而不是route
+// 跳转到新增页面
+goAddpage() {
+  // 跳转到新的组件中
+  this.$router.push(`/goods/add`)
+}
+【使用】
+定义在函数中，可以直接调用函数
+<el-button type="primary" @click="goAddpage">添加商品</el-button>
+
+
+
+【注】
+在路由规则注册中，路径名要写全'/goods/add'
+写/add不起作用

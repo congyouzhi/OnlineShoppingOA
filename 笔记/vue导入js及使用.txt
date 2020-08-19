@@ -1,0 +1,12 @@
+Vue导入js及使用js
+1.将js导入到项目中
+2.在vue文件中的<script>下import导入
+3.
+<script>
+  import citydata from "./citydata";
+【注】不是在</script>结束标签后导入
+【使用】
+在  export default {
+    data() {}}
+中定义一个然后再指向这个引用的
+citydata:citydata
