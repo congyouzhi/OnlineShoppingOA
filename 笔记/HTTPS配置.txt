@@ -1,0 +1,20 @@
+1.配置HTTPS服务
+申请SSL证书（https:freessl.org）
+①进入https://freessl.cn/官网，输入要申请的域名并选择品牌
+②输入自己的邮箱并选择相关选项
+③登录服务器验证DNS（在域名管理后台添加TXT记录）
+④验证通过之后，下载SSL证书（full_chain.pem公钥；private.key私钥）
+
+【网站】https://freessl.cn/
+【操作】
+1.输入域名【域名和ip绑定】
+2.选择中间的多域名通配符
+3.创建免费的证书
+4.配置默认
+5.在后台项目中导入证书
+const https = require('https');
+const fs = require('fs');
+const option = {
+cert:fs.readFileSync('./full_chain.pem'),
+key:fs.readFileSync('./private.key')}
+https.createServer(options,app).listen(443);
