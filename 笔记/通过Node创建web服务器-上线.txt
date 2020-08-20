@@ -1,0 +1,39 @@
+通过Node创建web服务器-上线
+1.通过node创建web服务器
+2.开启gzip配置
+3.配置https服务
+4.使用pm2管理应用
+【操作】
+1.创建node项目，并安装express，通过express快速创建web服务器，将vue打包生成的dist文件夹，托管为静态资源即可
+2.在vue_shop【项目文件夹】文件夹同级下新建vue_shop_server文件夹
+3.用WebStrom打开->先close project
+4.在终端中运行命令-初始化包进行管理
+npm init -y 
+5.安装第三方包
+npm i express -S
+6.安装成功后将vue_shop中的dist文件放到vue_shop_server中
+7.在vue_shop_server项目中新建app.js[和dist文件夹平级]
+8.在app.js中进行配置及启动web服务器
+  a.导入express
+  b.创建web 服务器
+  c.中间键进行托管静态资源[加载dist文件夹]
+  d.启动web服务器[通过listen，其中包括指定端口和回调函数]
+【代码】
+// 导入express
+const express = require('express')
+// 创建web服务器
+const app =express()
+// 中间键，托管静态资源
+// express.static('') 将指定目录托管为静态资源
+app.use(express.static('./dist'))
+// 启动web服务器，在82端口,回调函数输出信息127
+// 启动Ip:http://127.0.0.1:82/#/params
+app.listen(82,()=>{
+  console.log('server running at http://127.0.0.1')
+})
+
+9.运行项目
+【命令】
+node .\app.js
+E:\Work\OnlineShoppingOA\vue_shop_server>node .\app.js
+当输出回调函数中的内容时，表示启动成功

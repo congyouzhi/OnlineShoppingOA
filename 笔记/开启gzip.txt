@@ -1,0 +1,22 @@
+开启gzip配置
+1.使用gzip可以减小文件体积，使传输速度更快
+2.可以通过服务器端使用Express做gzip压缩，配置如下：
+a.安装相应包
+// 安装相应包
+npm install compression -S
+b.导入包
+// 导入包
+const compression = require('compression');
+c.启用中间件
+app.use(compression());
+3.启动服务
+node .\app.js
+
+
+【注】
+// 一定要把这一行代码，写到静态资源托管之前，否则压缩不生效
+app.use(compression())
+// 中间件，托管静态资源
+// express.static('') 将指定目录托管为静态资源
+app.use(express.static('./dist'))
+3.

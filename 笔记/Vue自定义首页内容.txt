@@ -1,2 +1,14 @@
 自定义首页内容
 不同的打包环境下，首页内容不同，通过插件的方式进行定制
+在vue.config.js中添加配置
+      // 控制首页显示标识符
+      config.plugin('html').tap(args => {
+        args[0].isProd = true
+        return args
+      })
+数组后直接点表示直接追加
+在index.html中<title>中注明标题变量<title><%= htmlWebpackPlugin.options.isProd %>电商后台管理系统</title>
+<%= htmlWebpackPlugin.options.isProd %>其中的isProd是配置文件中定义的名称
+
+查看build是否加载CDN
+打包后查看dist文件夹中的index.html文件

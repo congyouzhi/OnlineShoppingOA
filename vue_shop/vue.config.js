@@ -15,7 +15,7 @@ module.exports = {
         nprogress: 'NProgress',
         'vue-quill-editor': 'VueQuillEditor'
       })
-
+      // 控制首页显示标识符
       config.plugin('html').tap(args => {
         args[0].isProd = true
         return args
@@ -25,6 +25,11 @@ module.exports = {
     // 开发模式
     config.when(process.env.NODE_ENV ==='development',config=>{
       config.entry('app').clear().add('./src/main-dev.js')
+      // 控制首页显示标识符
+      config.plugin('html').tap(args => {
+        args[0].isProd = false
+        return args
+      })
     })
   }
 }

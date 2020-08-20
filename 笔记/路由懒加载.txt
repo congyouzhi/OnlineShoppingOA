@@ -1,5 +1,34 @@
-import Vue from "vue";
-import Router from 'vue-router'
+路由懒加载
+【原因】：打包构建项目的时候js包过于庞大，影响页面加载，然后将不同路由对应的组件分隔成不同的代码块，然后当路由被访问的时候才加载对应的组件
+【步骤】:
+1.安装@babel/plugin-syntax-dynamic-import包
+2.在babel.config.js配置文件中声明该插件【添加到plugins中】
+【语法】
+const Foo =>import(/* webpackChunkName:"group-foo"*/ './Foo.vue')
+const Bar=>import(/* webpackChunkName:"group-foo"*/ './Bar.vue')
+const Baz=>import(/* webpackChunkName:"group-boo"*/ './Baz.vue')
+语法中前面是分组group-foot同名的是组，这样在打包的时候会将Foo.vue和Bar.vue组件打包的同一组也就是同一个js 中
+而Baz.vue会单独一个组中
+【参考】https://router.vuejs.org/zh/guide/advanced/lazy-loading.html
+【安装】
+cnpm install --save-dev @babel/plugin-syntax-dynamic-import
+【配置】
+在babel.config.js中的plugins中添加[在...prodPlugins下面，通过逗号分隔]
+    // 发布产品时候的插件数组
+    ...prodPlugins,
+    // 路由懒加载
+    "@babel/plugin-syntax-dynamic-import"
+  ]
+【改造路由】
+修改router.js中路由导入import修改成固定语法
+【例】登录[将登录、首页、欢迎为一组]
+// import Login from "./components/Login.vue";【以前写法】
+// 懒加载形式
+const Login = () => import(/* webpackChunkName: "login_home_welcome" */ './components/Login.vue')
+【注】懒加载中后面写的地址和之前的路由配置地址相同
+
+
+【例】
 // 原始写法
 // import Login from "./components/Login.vue";
 // import Home from './components/Home';
@@ -31,57 +60,3 @@ const Add = () => import(/* webpackChunkName: "GoodsList_Add" */ './components/g
 
 const Order = () => import(/* webpackChunkName: "Order_Report" */ './components/order/order')
 const Report = () => import(/* webpackChunkName: "Order_Report" */ './components/report/Report')
-
-
-Vue.use(Router)
-
-const router = new Router({
-  // 存储路由规则
-  routes: [
-    // 重定向
-    {path: '/', redirect: '/login'},
-    {path: '/login', component: Login},
-    {
-      path: '/home', component: Home, redirect: '/welcome',
-      children: [
-        {path: '/welcome', component: Welcome},
-        {path: '/users', component: Users},
-        {path: '/rights', component: Rights},
-        {path: '/roles', component: Roles},
-        {path: '/categories', component: Cate},
-        {path: '/params', component: Params},
-        {path: '/goods', component: GoodsList},
-        {path: '/goods/add', component: Add},
-        {path: '/orders', component: Order},
-        {path: '/reports', component: Report},
-      ]
-    }
-  ]
-})
-
-// 挂载路由导航守卫
-router.beforeEach((to, from, next) => {
-  // to 将要访问的路径
-  // from 代表从哪个路径跳转而来
-  // next 是一个函数，表示放行
-  // next() 放行 next('/login') [注]若next中带有参数表示强制跳转
-  // 判断地址是否为登录页面
-  if (to.path === '/login') {
-    // 放行
-    return next();
-  } else {
-    // 获取token
-    const tokenStr = window.sessionStorage.getItem('token');
-    // 判断token是否存在
-    if (!tokenStr) {
-      // 若为空则跳转到登录页面
-      return next('/login')
-    } else {
-      // 否则不为空则直接通过
-      next();
-    }
-  }
-})
-
-// 【注】定义router为对象后要添加导出，才能使用路由
-export default router
