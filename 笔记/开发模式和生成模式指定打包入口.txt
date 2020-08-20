@@ -1,0 +1,31 @@
+开发模式和生成模式指定打包入口
+1.默认情况下Vue项目的开发模式和发布模式，共用一个打包的入口文件(即:src/main.js)
+2.分开后:
+a.src/main-dev.js
+b.src/main-prod.js
+3.操作
+在vue.config.js导出的配置对象中，新增configureWebpack或chainWebpack节点，来定义webpack的打包配置
+这里，configWebpack和chainWebpack的作用相同，区别在于修改webpack配置的方式不同:
+a.chainWebpack通过链式编程形式修改
+b.configureWebpack通过操作对象形式修改
+
+4.将main.js复制两份分别为main-dev.js和main-prod.js以前的main.js可以删除掉
+因为main.js是打包的入口
+
+5.在vue.config.js中添加chainWebpack指定打包环境
+【注】其中可以通过process.env.NODE_ENV获取当前环境
+
+【代码】
+module.exports = {
+  lintOnSave: false,
+  /*先进入默认的打包入口[main.js][app], 清理一下，将自己的添加进入*/
+  chainWebpack: config => {
+    config.when(process.env.NODE_ENV ==='production',config=>{
+      config.entry('app').clear().add('./src/main-prod.js')
+    })
+
+    config.when(process.env.NODE_ENV ==='development',config=>{
+      config.entry('app').clear().add('./src/main-dev.js')
+    })
+  }
+}
